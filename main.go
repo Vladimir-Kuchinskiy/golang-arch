@@ -24,5 +24,12 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	fmt.Println(bs)
+	fmt.Println(string(bs))
+
+	xp2 := []person{}
+
+	if err = json.Unmarshal(bs, &xp2); err != nil {
+		log.Panic(err)
+	}
+	fmt.Println(xp2)
 }
