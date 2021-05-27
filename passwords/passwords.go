@@ -1,6 +1,8 @@
 package passwords
 
 import (
+	"crypto/hmac"
+	"crypto/sha512"
 	"fmt"
 
 	"golang.org/x/crypto/bcrypt"
@@ -21,4 +23,27 @@ func ComparePassword(password string, hashedPassword []byte) error {
 	}
 
 	return nil
+}
+
+func SignMessage(msg []byte, key []byte) ([]byte, error) {
+	h := hmac.New(sha512.New, key)
+	_, err := h.Write(msg)
+
+	if err != nil {
+		return nil, fmt.Errorf("error in signMessage while hasing message: %w", err)
+	}
+
+	signature := h.Sum(nil)
+
+	return signature, nil
+}
+
+func CheckSign(msg, sig []byte, key []byte) (bool, error) {
+	newSign, err := SignMessage(msg, key)
+	if err != nil {
+		return false, fmt.Errorf("error in checkSign while getting signature of message: %w", err)
+	}
+
+	same := hmac.Equal(newSign, sig)
+	return same, nil
 }

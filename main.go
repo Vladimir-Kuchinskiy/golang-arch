@@ -13,7 +13,13 @@ type person struct {
 	First string
 }
 
+var key []byte
+
 func main() {
+	for i := 1; i <= 64; i++ {
+		key = append(key, byte(i))
+	}
+
 	//Password hash
 	pass := "123456789"
 
