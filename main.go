@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/Vladimir-Kuchinskiy/golang-arch/passwords"
 )
 
 type person struct {
@@ -12,6 +14,22 @@ type person struct {
 }
 
 func main() {
+	//Password hash
+	pass := "123456789"
+
+	hashedPass, err := passwords.HashPassword(pass)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	err = passwords.ComparePassword(pass, hashedPass)
+	if err != nil {
+		log.Fatalln("Not logged in", err)
+	}
+
+	log.Printf("Password: %s, hashedPassword: %s", pass, string(hashedPass))
+
+	// Marshal unmarshal
 	p1 := person{
 		First: "Alex",
 	}
@@ -34,6 +52,7 @@ func main() {
 	}
 	fmt.Println(xp2)
 
+	// Encode, Decode
 	http.HandleFunc("/encode", encode)
 	http.HandleFunc("/decode", decode)
 	http.HandleFunc("/encode-array", encodeArray)
