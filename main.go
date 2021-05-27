@@ -50,5 +50,10 @@ func encode(w http.ResponseWriter, r *http.Request) {
 }
 
 func decode(w http.ResponseWriter, r *http.Request) {
+	p1 := person{}
 
+	if err := json.NewDecoder(r.Body).Decode(&p1); err != nil {
+		log.Println(err)
+	}
+	log.Println("Person: ", p1)
 }
