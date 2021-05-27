@@ -36,6 +36,8 @@ func main() {
 
 	http.HandleFunc("/encode", encode)
 	http.HandleFunc("/decode", decode)
+	http.HandleFunc("/encode-array", encodeArray)
+	http.HandleFunc("/decode-array", decodeArray)
 	http.ListenAndServe(":8080", nil)
 }
 
@@ -56,4 +58,28 @@ func decode(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 	log.Println("Person: ", p1)
+}
+
+func encodeArray(w http.ResponseWriter, r *http.Request) {
+	people := []person{
+		{
+			First: "Jenny",
+		},
+		{
+			First: "Mike",
+		},
+	}
+
+	if err := json.NewEncoder(w).Encode(people); err != nil {
+		log.Println(err)
+	}
+}
+
+func decodeArray(w http.ResponseWriter, r *http.Request) {
+	people := []person{}
+
+	if err := json.NewDecoder(r.Body).Decode(&people); err != nil {
+		log.Println(err)
+	}
+	log.Println("Person: ", people)
 }
