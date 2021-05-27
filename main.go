@@ -40,7 +40,13 @@ func main() {
 }
 
 func encode(w http.ResponseWriter, r *http.Request) {
+	p1 := person{
+		First: "Jenny",
+	}
 
+	if err := json.NewEncoder(w).Encode(p1); err != nil {
+		log.Println(err)
+	}
 }
 
 func decode(w http.ResponseWriter, r *http.Request) {
