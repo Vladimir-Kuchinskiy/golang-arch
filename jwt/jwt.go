@@ -23,3 +23,13 @@ func (u *UserClaims) Valid() error {
 
 	return nil
 }
+
+func CreateToken(u *UserClaims, key []byte) (string, error) {
+	t := jwt.NewWithClaims(jwt.SigningMethodHS512, u)
+	signedToken, err := t.SignedString(key)
+	if err != nil {
+		return "", fmt.Errorf("error in creatToken on token sign: %w", err)
+	}
+
+	return signedToken, nil
+}
